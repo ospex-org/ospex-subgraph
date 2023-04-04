@@ -1,5 +1,90 @@
-type ExampleEntity @entity {
+type Contest @entity {
   id: ID!
-  count: BigInt!
-  id: Bytes! # bytes32
+  awayScore: Int
+  homeScore: Int
+  contestCreator: Bytes
+  rundownId: String
+  sportspageId: String
+  contestCreationId: String
+  leagueId: Int
+  league: String
+  awayTeamId: Int
+  awayTeam: String
+  homeTeamId: Int
+  homeTeam: String
+  eventTime: Int
+  contestStatus: ContestStatus!
+  speculations: [Speculation!]! @derivedFrom(field: "contest")
+}
+
+type Speculation @entity {
+  id: ID!
+  contest: Contest!
+  contestId: String
+  lockTime: Int
+  speculationScorer: Bytes
+  theNumber: Int
+  speculationCreator: Bytes
+  upperAmount: BigInt
+  lowerAmount: BigInt
+  winSide: WinSide!
+  speculationStatus: SpeculationStatus!
+  positions: [Position!]! @derivedFrom(field: "speculation")
+}
+
+type Position @entity {
+  id: ID!
+  speculation: Speculation!
+  speculationId: String
+  user: User!
+  userId: String
+  amount: BigInt
+  contributedUponCreation: BigInt
+  contributedUponClaim: BigInt
+  positionType: PositionTypeSpecified!
+  claimed: Boolean
+  amountClaimed: BigInt
+}
+
+# create User type, to show array of positions - same as speculation but derived by user
+
+type User @entity {
+  id: ID!
+  positions: [Position!]! @derivedFrom(field: "user")
+}
+
+enum ContestStatus {
+  Unverified
+  Verified
+  Pending
+  Scored
+  NotMatching
+  ScoredManually
+  RequiresConfirmation
+  Void
+}
+
+enum SpeculationStatus {
+  Open
+  Locked
+  Closed
+}
+
+enum WinSide {
+  TBD
+  Away
+  Home
+  Over
+  Under
+  Push
+  Forfeit
+  Invalid
+  Void
+}
+
+enum PositionTypeSpecified { # different than position type on contract, not just upper / lower, takes into consideration the scorer address
+  Away
+  Home
+  Over
+  Under
 }

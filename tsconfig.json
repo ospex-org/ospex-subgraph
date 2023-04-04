@@ -1,4 +1,9 @@
 {
   "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src"]
+  "include": ["src"],
+  // "compilerOptions": {
+  //   "lib": [ "es2017", "dom" ],
+  //   "target": "ES5",
+  //   "noLib": false
+  // }
 }
