@@ -926,6 +926,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_DAOAddress",
+				"type": "address"
+			}
+		],
+		"name": "updateDAOAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "usdc",
 		"outputs": [

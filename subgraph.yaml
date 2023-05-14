@@ -7,9 +7,9 @@ dataSources:
     name: ospexCOR
     network: goerli
     source:
-      address: "0x316e5abAB00766aae91D930Cbe18fb1a4666F26C"
+      address: "0xb21f25274e873240f0CEe29B8548C551B307BAc3"
       abi: ContestOracleResolved
-      startBlock: 8230451
+      startBlock: 8997355
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -30,9 +30,9 @@ dataSources:
     name: ospexCFP
     network: goerli
     source:
-      address: "0xE6ECdAe39e938907CCA01BA5719928b2982eb5a5"
+      address: "0x2c7e3Ad326CBF590C7cACFB3eB1a68d09b9Ae420"
       abi: CFPv1
-      startBlock: 8594279
+      startBlock: 8997391
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
