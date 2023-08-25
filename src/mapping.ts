@@ -19,7 +19,6 @@ import teamLegend from "./teamLegend"
 class ContestStatus {
   static Unverified: string = "Unverified"
   static Verified: string = "Verified"
-  static Pending: string = "Pending"
   static Scored: string = "Scored"
   static NotMatching: string = "NotMatching"
   static ScoredManually: string = "ScoredManually"
@@ -53,13 +52,13 @@ class PositionTypeSpecified {
 }
 
 // hardcoded address for settling speculations based on total
-// this is the Goerli address and will need to change in production
-const totalAddress = Address.fromString("0x8B047213ed5076aCB51BFF9Fce56ACcBD5474Ba4")
+// this is the mumbai address and will need to change in production
+const totalAddress = Address.fromString("0xEEeC1dc4298F1082554BCBe59b51E790b3967903")
 
 export function handleContestCreated(event: ContestCreated): void {
 
   // id field for unique identifier
-  const id = event.params.id
+  const id = event.params.contestId
 
   // create new contest with unique id
   const contest = new Contest(id.toString())
@@ -68,6 +67,7 @@ export function handleContestCreated(event: ContestCreated): void {
   contest.contestCreator = event.params.contestCreator
   contest.rundownId = event.params.rundownId
   contest.sportspageId = event.params.sportspageId
+  contest.jsonoddsId = event.params.jsonoddsId
   contest.contestCreationId = event.params.contestCriteria.toString()
   contest.leagueId = <i32>parseInt(contest.contestCreationId!.substr(0,1))
   contest.awayTeamId = <i32>parseInt(contest.contestCreationId!.substr(1,4))
@@ -102,7 +102,7 @@ export function handleContestCreated(event: ContestCreated): void {
 
 export function handleContestScored(event: ContestScored): void {
 
-  const id = event.params.id
+  const id = event.params.contestId
 
   let contest = Contest.load(id.toString())
 
@@ -118,7 +118,7 @@ export function handleContestScored(event: ContestScored): void {
 export function handleSpeculationCreated(event: SpeculationCreated): void {
 
   // id field for unique identifier
-  const id = event.params.id
+  const id = event.params.speculationId
 
   // create new speculation with unique id
   const speculation = new Speculation(id.toString())
@@ -140,7 +140,7 @@ export function handleSpeculationCreated(event: SpeculationCreated): void {
 }
 
 export function handleSpeculationLocked(event: SpeculationLocked): void {
-  const id = event.params.id
+  const id = event.params.speculationId
 
   let speculation = Speculation.load(id.toString())
 
@@ -152,7 +152,7 @@ export function handleSpeculationLocked(event: SpeculationLocked): void {
 }
 
 export function handleSpeculationScored(event: SpeculationScored): void {
-  const id = event.params.id
+  const id = event.params.speculationId
 
   let speculation = Speculation.load(id.toString())
 
@@ -185,8 +185,8 @@ export function handleSpeculationScored(event: SpeculationScored): void {
 }
 
 export function handlePositionCreated(event: PositionCreated): void {
-  const id = event.params.id.toHex() + event.params.user.toHex() + event.params.positionType.toString()
-  const speculationId = event.params.id
+  const id = event.params.speculationId.toHex() + event.params.user.toHex() + event.params.positionType.toString()
+  const speculationId = event.params.speculationId
   const userId = event.params.user.toHex()
 
   let speculation = Speculation.load(speculationId.toString())
@@ -216,8 +216,8 @@ export function handlePositionCreated(event: PositionCreated): void {
     position.contributedUponCreation = position.contributedUponCreation!.plus(event.params.contributionAmount)
   } else {
     position = new Position(id)
-    position.speculation = event.params.id.toString()
-    position.speculationId = event.params.id.toString()
+    position.speculation = event.params.speculationId.toString()
+    position.speculationId = event.params.speculationId.toString()
     position.user = event.params.user.toHex()
     position.userId = event.params.user.toHex()
     position.amount = event.params.amount
@@ -242,7 +242,7 @@ export function handlePositionCreated(event: PositionCreated): void {
 
 export function handleClaim(event: Claim): void {
 
-  const speculationId = event.params.id
+  const speculationId = event.params.speculationId
 
   let speculation = Speculation.load(speculationId.toString())
   let position: Position | null
@@ -250,13 +250,13 @@ export function handleClaim(event: Claim): void {
   // no id for position; position to load must be determined by speculation win side
   if (speculation) {
     if (speculation.winSide == "Away" || speculation.winSide == "Over") {
-      position = Position.load(event.params.id.toHex() + event.params.user.toHex() + "0")
+      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
     } else if (speculation.winSide == "Home" || speculation.winSide == "Under") {
-      position = Position.load(event.params.id.toHex() + event.params.user.toHex() + "1")
+      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
     } else if (speculation.winSide == "Invalid") {
-      position = Position.load(event.params.id.toHex() + event.params.user.toHex() + "0")
+      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
     } else {
-      position = Position.load(event.params.id.toHex() + event.params.user.toHex() + "1")
+      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
     }
     if (position) {
       position.claimed = true

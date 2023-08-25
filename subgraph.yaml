@@ -5,11 +5,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ospexCOR
-    network: goerli
+    network: mumbai
     source:
-      address: "0xb21f25274e873240f0CEe29B8548C551B307BAc3"
+      address: "0x34E3aD450CE15703B19e0BA39504C4C487287864"
       abi: ContestOracleResolved
-      startBlock: 8997355
+      startBlock: 39375879
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -21,18 +21,18 @@ dataSources:
         - name: ContestOracleResolved
           file: ./abis/ContestOracleResolved.json
       eventHandlers:
-        - event: ContestCreated(indexed uint256,string,string,address,uint64)
+        - event: ContestCreated(indexed uint256,string,string,string,address,uint256)
           handler: handleContestCreated
         - event: ContestScored(indexed uint256,uint32,uint32)
           handler: handleContestScored
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: ospexCFP
-    network: goerli
+    network: mumbai
     source:
-      address: "0x2c7e3Ad326CBF590C7cACFB3eB1a68d09b9Ae420"
+      address: "0x046dC94519b23c9272712d18Bc00fA73eEd8CF2D"
       abi: CFPv1
-      startBlock: 8997391
+      startBlock: 39375961
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
