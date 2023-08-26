@@ -53,7 +53,7 @@ class PositionTypeSpecified {
 
 // hardcoded address for settling speculations based on total
 // this is the mumbai address and will need to change in production
-const totalAddress = Address.fromString("0xEEeC1dc4298F1082554BCBe59b51E790b3967903")
+const totalAddress = Address.fromString("0x9d1FCC4d4813796cC3239Ea3cEf07444904bfaEA")
 
 export function handleContestCreated(event: ContestCreated): void {
 
