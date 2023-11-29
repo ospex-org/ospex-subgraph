@@ -7,9 +7,9 @@ dataSources:
     name: ospexCOR
     network: mumbai
     source:
-      address: "0x0B556C3650a01Bc779F7afF1f6Bf11166276C9Cb"
+      address: "0x3bb30a30a1256E72C3f43bBCa1A2D68065F6E44f"
       abi: ContestOracleResolved
-      startBlock: 39416541
+      startBlock: 41647331
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -30,9 +30,9 @@ dataSources:
     name: ospexCFP
     network: mumbai
     source:
-      address: "0xdfa8538C3eb080959fe357C904798f40753722b2"
+      address: "0x161944b13236897A1967a9Da79F402C5e79181C6"
       abi: CFPv1
-      startBlock: 39434622
+      startBlock: 41647883
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

@@ -53,7 +53,7 @@ class PositionTypeSpecified {
 
 // hardcoded address for settling speculations based on total
 // this is the mumbai address and will need to change in production
-const totalAddress = Address.fromString("0x9d1FCC4d4813796cC3239Ea3cEf07444904bfaEA")
+const totalAddress = Address.fromString("0x45AB6E309304142fEB7C1F0Fce9D6EE12a28A69D")
 
 export function handleContestCreated(event: ContestCreated): void {
 
@@ -243,26 +243,29 @@ export function handlePositionCreated(event: PositionCreated): void {
 export function handleClaim(event: Claim): void {
 
   const speculationId = event.params.speculationId
-
   let speculation = Speculation.load(speculationId.toString())
-  let position: Position | null
 
   // no id for position; position to load must be determined by speculation win side
   if (speculation) {
+    let positionIds: string[] = []
+    
     if (speculation.winSide == "Away" || speculation.winSide == "Over") {
-      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
+      positionIds.push(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
     } else if (speculation.winSide == "Home" || speculation.winSide == "Under") {
-      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
-    } else if (speculation.winSide == "Invalid") {
-      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
-    } else {
-      position = Position.load(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
+      positionIds.push(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
+    } else if (speculation.winSide == "Push" || speculation.winSide == "Forfeit" || speculation.winSide == "Invalid" || speculation.winSide == "Void") {
+      positionIds.push(event.params.speculationId.toHex() + event.params.user.toHex() + "0")
+      positionIds.push(event.params.speculationId.toHex() + event.params.user.toHex() + "1")
     }
-    if (position) {
-      position.claimed = true
-      position.amountClaimed = event.params.amount
-      position.contributedUponClaim = event.params.contributionAmount
-      position.save()
+
+    for (let i = 0; i < positionIds.length; i++) {
+      let position = Position.load(positionIds[i])
+      if (position) {
+        position.claimed = true
+        position.amountClaimed = event.params.amount
+        position.contributedUponClaim = event.params.contributionAmount
+        position.save()
+      }
     }
   }
 }
