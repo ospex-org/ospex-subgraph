@@ -5,11 +5,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ospexCOR
-    network: mumbai
+    network: matic
     source:
-      address: "0x3bb30a30a1256E72C3f43bBCa1A2D68065F6E44f"
+      address: "0x6342692B76273554beb4Ce1284ac6a92Ef645e79"
       abi: ContestOracleResolved
-      startBlock: 41647331
+      startBlock: 50562696
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -28,11 +28,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: ospexCFP
-    network: mumbai
+    network: matic
     source:
-      address: "0x161944b13236897A1967a9Da79F402C5e79181C6"
+      address: "0x4fE4732953Ccfb58976B4fab8A8623876Fa2A44E"
       abi: CFPv1
-      startBlock: 41647883
+      startBlock: 50563187
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
